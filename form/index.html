@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f3f5ef">
+	<title>Manage examples — Cell Atlas</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			color-scheme: light;
+			--paper: #f3f5ef;
+			--ink: #17251f;
+			--muted: #69756e;
+			--line: #d8ded7;
+			--accent: #d75b43;
+			--green: #406a54;
+			--mono: "DM Mono", monospace;
+			--sans: "DM Sans", sans-serif;
+			--display: "Manrope", sans-serif;
+		}
+		* { box-sizing: border-box; }
+		body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+		.topbar { position: sticky; z-index: 2; top: 0; height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(22px, 5vw, 76px); border-bottom: 1px solid rgb(23 37 31 / 12%); background: rgb(243 245 239 / 93%); backdrop-filter: blur(12px); }
+		.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-family: var(--display); font-size: 14px; font-weight: 800; }
+		.brand-mark { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 50%; background: var(--green); }
+		.brand-mark::before { content: ""; width: 9px; height: 9px; border: 1.5px solid white; border-radius: 50%; box-shadow: 4px -3px 0 -1px var(--green), 4px -3px 0 0 white; }
+		.home-link, .eyebrow { color: var(--green); font: 10px var(--mono); letter-spacing: .09em; text-decoration-thickness: 1px; text-underline-offset: 4px; text-transform: uppercase; }
+		main { width: min(100% - 48px, 920px); margin: 0 auto; padding: 58px 0 76px; }
+		.page-heading { margin-bottom: 25px; }
+		.eyebrow { margin: 0 0 9px; }
+		h1, h2 { margin: 0; font-family: var(--display); letter-spacing: 0; }
+		h1 { font-size: clamp(34px, 5vw, 48px); line-height: 1.05; }
+		h2 { margin-bottom: 7px; font-size: 22px; }
+		.notice { margin: 16px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+		.forms { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 20px; }
+		.form-card { padding: clamp(22px, 4vw, 34px); border: 1px solid var(--line); background: rgb(255 255 255 / 34%); }
+		.form-intro { margin: 0 0 23px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+		label { display: block; margin: 17px 0 7px; font-size: 12px; font-weight: 700; }
+		input, textarea, select { width: 100%; min-height: 43px; padding: 10px 12px; border: 1px solid #c5cec5; border-radius: 0; background: #fff; color: var(--ink); font: 14px var(--sans); }
+		textarea { min-height: 116px; resize: vertical; }
+		input:focus, textarea:focus, select:focus, button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+		input[type="file"] { padding: 8px; }
+		.hint { margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+		button { min-height: 43px; margin-top: 20px; padding: 0 18px; border: 1px solid var(--green); background: var(--green); color: white; font: 600 12px var(--sans); cursor: pointer; }
+		button:hover:not(:disabled) { background: #315440; }
+		button:disabled { opacity: .5; cursor: not-allowed; }
+		.delete-card button { border-color: var(--accent); background: var(--accent); }
+		.delete-card button:hover:not(:disabled) { background: #b84632; }
+		.status { min-height: 1.5em; margin: 18px 0 0; color: var(--green); font-size: 13px; }
+		.status[role="alert"] { color: #a73524; }
+		@media (max-width: 700px) {
+			.topbar { height: 58px; }
+			main { width: min(calc(100% - 36px), 540px); padding-top: 38px; }
+			.forms { grid-template-columns: 1fr; }
+		}
+	</style>
+</head>
+<body>
+	<header class="topbar">
+		<a class="brand" href="../" aria-label="Cell Atlas home">
+			<span class="brand-mark" aria-hidden="true"></span>
+			<span>Cell Atlas</span>
+		</a>
+		<a class="home-link" href="../">View collection</a>
+	</header>
+
+	<main>
+		<header class="page-heading">
+			<p class="eyebrow">Collection / Management</p>
+			<h1>Manage examples</h1>
+			<p class="notice">The forms are on this separate page. Examples are saved only in this browser and are not shared with other visitors. Anyone who visits this page can add or delete examples.</p>
+		</header>
+
+		<section class="forms" aria-label="Manage examples">
+			<form id="add-form" class="form-card">
+				<p class="eyebrow">Contribute</p>
+				<h2>Add an example</h2>
+				<p class="form-intro">Choose an image or video, give it a title, and add a description.</p>
+				<label for="example-title">Title</label>
+				<input id="example-title" name="title" type="text" maxlength="120" required>
+				<label for="example-media">Image or video</label>
+				<input id="example-media" name="media" type="file" accept="image/*,video/*" required>
+				<p class="hint">Supported formats depend on your browser. Files stay on this device.</p>
+				<label for="example-description">Description</label>
+				<textarea id="example-description" name="description" maxlength="3000" required></textarea>
+				<button type="submit">Add example</button>
+			</form>
+
+			<form id="delete-form" class="form-card delete-card">
+				<p class="eyebrow">Manage collection</p>
+				<h2>Delete an example</h2>
+				<p class="form-intro">Select an example from this browser's collection to remove it.</p>
+				<label for="delete-example">Example</label>
+				<select id="delete-example" name="example" required disabled>
+					<option value="">Loading examples…</option>
+				</select>
+				<button id="delete-button" type="submit" disabled>Delete selected example</button>
+			</form>
+		</section>
+		<p id="status" class="status" role="status" aria-live="polite"></p>
+	</main>
+
+	<script>
+		const databaseName = 'cell-atlas';
+		const databaseVersion = 1;
+		const addForm = document.querySelector('#add-form');
+		const deleteForm = document.querySelector('#delete-form');
+		const deleteSelect = document.querySelector('#delete-example');
+		const deleteButton = document.querySelector('#delete-button');
+		const statusElement = document.querySelector('#status');
+		let database;
+
+		function openDatabase() {
+			return new Promise((resolve, reject) => {
+				const request = indexedDB.open(databaseName, databaseVersion);
+				request.onupgradeneeded = () => {
+					request.result.createObjectStore('examples', { keyPath: 'id' });
+				};
+				request.onsuccess = () => resolve(request.result);
+				request.onerror = () => reject(request.error);
+			});
+		}
+
+		function runTransaction(mode, operation) {
+			return new Promise((resolve, reject) => {
+				const transaction = database.transaction('examples', mode);
+				const request = operation(transaction.objectStore('examples'));
+				transaction.oncomplete = () => resolve(request.result);
+				transaction.onerror = () => reject(transaction.error);
+				transaction.onabort = () => reject(transaction.error || new Error('The storage operation was aborted.'));
+			});
+		}
+
+		function setStatus(message, isError = false) {
+			statusElement.textContent = message;
+			statusElement.setAttribute('role', isError ? 'alert' : 'status');
+		}
+
+		async function refreshExamples() {
+			const examples = await runTransaction('readonly', (store) => store.getAll());
+			deleteSelect.replaceChildren();
+			const placeholder = document.createElement('option');
+			placeholder.value = '';
+			placeholder.textContent = examples.length ? 'Choose an example' : 'No examples to delete';
+			deleteSelect.append(placeholder);
+			for (const example of examples) {
+				const option = document.createElement('option');
+				option.value = example.id;
+				option.textContent = example.title;
+				deleteSelect.append(option);
+			}
+			deleteSelect.disabled = examples.length === 0;
+			deleteButton.disabled = examples.length === 0;
+		}
+
+		addForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const submitButton = addForm.querySelector('button[type="submit"]');
+			const formData = new FormData(addForm);
+			const file = formData.get('media');
+			if (!(file instanceof File) || file.size === 0 || (!file.type.startsWith('image/') && !file.type.startsWith('video/'))) {
+				setStatus('Choose a valid image or video file before adding the example.', true);
+				return;
+			}
+
+			submitButton.disabled = true;
+			try {
+				await runTransaction('readwrite', (store) => store.add({
+					id: crypto.randomUUID(),
+					title: String(formData.get('title')).trim(),
+					description: String(formData.get('description')).trim(),
+					media: file,
+					mediaType: file.type
+				}));
+				addForm.reset();
+				await refreshExamples();
+				setStatus('Example added to this browser.');
+			} catch (error) {
+				setStatus(`Could not save the example: ${error.message || 'browser storage is unavailable or full.'}`, true);
+			} finally {
+				submitButton.disabled = false;
+			}
+		});
+
+		deleteForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (!deleteSelect.value) return;
+			const exampleName = deleteSelect.selectedOptions[0].textContent;
+			if (!window.confirm(`Delete "${exampleName}" from this browser?`)) return;
+
+			deleteButton.disabled = true;
+			try {
+				await runTransaction('readwrite', (store) => store.delete(deleteSelect.value));
+				await refreshExamples();
+				setStatus('Example deleted from this browser.');
+			} catch (error) {
+				setStatus(`Could not delete the example: ${error.message || 'browser storage is unavailable.'}`, true);
+			}
+		});
+
+		async function initialize() {
+			try {
+				if (!('indexedDB' in window)) throw new Error('This browser does not support local example storage.');
+				database = await openDatabase();
+				await refreshExamples();
+			} catch (error) {
+				addForm.querySelector('button[type="submit"]').disabled = true;
+				deleteButton.disabled = true;
+				setStatus(`Could not load examples: ${error.message || 'browser storage is unavailable.'}`, true);
+			}
+		}
+
+		initialize();
+	</script>
+</body>
+</html>
